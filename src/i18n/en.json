@@ -1,0 +1,17 @@
+{
+  "userNotFound": "User not found.",
+  "internalError": "Internal server error.",
+  "signUpValidationNameRequired": "Name is required.",
+  "signUpValidationNameEmpty": "Name must not be empty.",
+  "signUpValidationEmailEmpty": "Email must not be empty.",
+  "signUpValidationEmailRequired": "Email is required.",
+  "signUpValidationEmailEmail": "Please enter valid email.",
+  "signUpValidationPasswordRequired": "Password is required.",
+  "signUpValidationPasswordEmpty": "Password must not be empty.",
+  "signUpValidationPasswordPattern": "Password must be at least 8 characters with uppercase, lowercase, number, and special character.",
+  "userCreatedSuccessfully": "User created successfully.",
+  "userAlreadyExist": "User already exist.",
+  "emailNotRegistered": "If this email is registered with us, you’ll receive a password reset link shortly.",
+  "emailSent": "A password reset link has been sent to your registered email address. Please check your inbox.",
+  "tokenExpired": "Token has expired."
+}

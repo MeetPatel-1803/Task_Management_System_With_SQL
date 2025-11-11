@@ -33,8 +33,24 @@ const userSchema = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+    token_expire: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
+    indexes: [
+      {
+        unique: true,
+        fields: ["email"],
+      },
+    ],
     timestamps: true,
   }
 );
