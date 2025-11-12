@@ -5,7 +5,7 @@
   "signUpValidationNameEmpty": "Name must not be empty.",
   "signUpValidationEmailEmpty": "Email must not be empty.",
   "signUpValidationEmailRequired": "Email is required.",
-  "signUpValidationEmailEmail": "Please enter valid email.",
+  "signUpValidationEmailEmail": "Please provide a valid email address.",
   "signUpValidationPasswordRequired": "Password is required.",
   "signUpValidationPasswordEmpty": "Password must not be empty.",
   "signUpValidationPasswordPattern": "Password must be at least 8 characters with uppercase, lowercase, number, and special character.",
@@ -13,5 +13,17 @@
   "userAlreadyExist": "User already exist.",
   "emailNotRegistered": "If this email is registered with us, you’ll receive a password reset link shortly.",
   "emailSent": "A password reset link has been sent to your registered email address. Please check your inbox.",
-  "tokenExpired": "Token has expired."
+  "tokenExpired": "Token has expired.",
+  "authorizationError": "Authorization Error.",
+  "invalidToken": "Invalid token.",
+  "passwordResetSuccessfully": "Password reset successfully.",
+  "signInValidationEmailEmail": "Please provide a valid email address.",
+  "loginSuccess": "Login successfully.",
+  "forgotPasswordValidationEmailEmail": "Please provide a valid email address.",
+  "forgotPasswordValidationTokenRequired": "Token is required.",
+  "forgotPasswordValidationPasswordRequired": "Password is required.",
+  "forgotPasswordValidationConfirmpasswordRequired": "Confirm password is required.",
+  "forgotPasswordValidationConfirmpasswordOnly": "Password and confirm password do not match.",
+  "passwordResetSuccess": "Password reset successfully.",
+  "invalidCredentials": "Invalid credentials."
 }

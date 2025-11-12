@@ -5,6 +5,7 @@ const {
   errorResponseWithoutData,
   successResponseData,
   errorResponseData,
+  successResponseWithoutData,
 } = require("../utils/response.js");
 const {
   signUpValidation,
@@ -16,6 +17,7 @@ const { issueUserToken } = require("../services/jwtServices.js");
 const bcrypt = require("bcrypt");
 const { randomTokens } = require("../utils/helper.js");
 const nodemailer = require("nodemailer");
+const { resetPasswordTemplate } = require("../services/emailService.js");
 require("dotenv").config();
 
 const signUp = async (req, res) => {
@@ -77,30 +79,35 @@ const signIn = async (req, res) => {
           },
         });
         if (user) {
-          bcrypt.compare(reqParams.password, user.password, (err, result) => {
-            if (err) {
-              return internalServerErrorResponse(res);
+          bcrypt.compare(
+            reqParams.password,
+            user.password,
+            async (err, result) => {
+              if (err) {
+                return internalServerErrorResponse(res);
+              }
+              if (result) {
+                const payload = {
+                  id: user.id,
+                  email: user.email,
+                };
+                const token = await issueUserToken(payload);
+
+                return successResponseData(
+                  res,
+                  { token },
+                  META_CODE.SUCCESS,
+                  res.__("loginSuccess")
+                );
+              } else {
+                return errorResponseWithoutData(
+                  res,
+                  META_CODE.FAIL,
+                  res.__("invalidCredentials")
+                );
+              }
             }
-            if (result) {
-              const payload = {
-                id: user.id,
-                email: user.email,
-              };
-              const token = issueUserToken(payload);
-              return successResponseData(
-                res,
-                { token },
-                META_CODE.SUCCESS,
-                res.__("loginSuccess")
-              );
-            } else {
-              return errorResponseWithoutData(
-                res,
-                META_CODE.FAIL,
-                res.__("invalidCredentials")
-              );
-            }
-          });
+          );
         } else {
           return errorResponseWithoutData(
             res,
@@ -151,12 +158,13 @@ const forgotPassword = async (req, res) => {
               expires_at: tokenExpire,
             });
 
-            resetPasswordUrl = `http://${process.env.FRONTEND_URL}/reset-password?tokenId=${token}`;
+            resetPasswordUrl = `${process.env.FRONTEND_URL}/api/v1/reset-password?tokenId=${token}`;
 
             const transporter = nodemailer.createTransport({
+              service: process.env.EMAIL_SERVICE,
               host: process.env.HOST_SERVICE,
               port: process.env.SERVICE_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASSWORD,
@@ -167,8 +175,11 @@ const forgotPassword = async (req, res) => {
               await transporter.sendMail({
                 from: process.env.MAIL_USER,
                 to: reqParams.email,
-                subject: "RESET PASSWORD",
-                html: `${resetPasswordUrl}`,
+                subject: process.env.EMAIL_SUBJECT,
+                html: resetPasswordTemplate({
+                  name: user.name,
+                  resetPasswordUrl,
+                }),
               });
             } catch (error) {
               return errorResponseWithoutData(
@@ -201,7 +212,12 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const reqParams = req.body;
+    let reqParams = req.body;
+    const token = req.query.tokenId;
+    reqParams = {
+      ...reqParams,
+      token,
+    };
     resetPasswordValidation(reqParams, res, async (validate) => {
       if (validate) {
         const resetToken = await UserPasswordResets.findOne({
@@ -226,19 +242,35 @@ const resetPassword = async (req, res) => {
                   res.__(err)
                 );
               } else {
-                // const setData = await User.update(
-                //   { password: hash, Token: null, token_expire: null },
-                //   { where: { user_id: token } }
-                // );
-                // if (!setData) {
-                //   errorResponseData(res, INCORRECT_TOKEN, 498);
-                // } else {
-                //   successResponseWithoutData(res, PASSWORD_UPDATED);
-                // }
+                const setData = await UserPasswordResets.update(
+                  { Token: null, expires_at: null },
+                  { where: { user_id: req.authUser.id } }
+                );
+                const updatePassword = await User.update(
+                  { password: hash },
+                  { where: { id: req.authUser.id } }
+                );
+                if (!setData || !updatePassword) {
+                  return errorResponseWithoutData(
+                    res,
+                    RESPONSE_CODE.TOKEN_INAVLID,
+                    res.__("invalidToken")
+                  );
+                } else {
+                  return successResponseWithoutData(
+                    res,
+                    META_CODE.SUCCESS,
+                    res.__("passwordResetSuccess")
+                  );
+                }
               }
             });
           } else {
-            errorResponseData(res, INCORRECT_TOKEN, 498);
+            return errorResponseWithoutData(
+              res,
+              RESPONSE_CODE.TOKEN_INAVLID,
+              res.__("invalidToken")
+            );
           }
         }
       }
@@ -252,4 +284,5 @@ module.exports = {
   signUp,
   signIn,
   forgotPassword,
+  resetPassword,
 };
