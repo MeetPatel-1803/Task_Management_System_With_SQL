@@ -35,6 +35,12 @@ const userSchema = sequelize.define(
     },
   },
   {
+    indexes: [
+      {
+        unique: true,
+        fields: ["email"],
+      },
+    ],
     timestamps: true,
   }
 );

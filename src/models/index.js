@@ -55,6 +55,7 @@ const User = require("./User.js");
 const Project = require("./Project.js");
 const Task = require("./Task.js");
 const UserTask = require("./UserTasks.js");
+const UserPasswordResets = require("./UserPasswordResetToken.js");
 
 // Define associations
 User.belongsToMany(Task, {
@@ -91,4 +92,5 @@ module.exports = {
   Project,
   Task,
   UserTask,
+  UserPasswordResets,
 };
