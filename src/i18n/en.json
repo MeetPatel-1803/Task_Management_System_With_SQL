@@ -25,5 +25,11 @@
   "forgotPasswordValidationConfirmpasswordRequired": "Confirm password is required.",
   "forgotPasswordValidationConfirmpasswordOnly": "Password and confirm password do not match.",
   "passwordResetSuccess": "Password reset successfully.",
-  "invalidCredentials": "Invalid credentials."
+  "invalidCredentials": "Invalid credentials.",
+  "createProjectValidationTitleEmpty": "Title must not be empty.",
+  "createProjectValidationTitleRequired": "Title is required.",
+  "createProjectValidationStartdateRequired": "Start date is required.",
+  "createProjectValidationStartdateBase": "Start date must be a date.",
+  "createProjectValidationEnddateRequired": "End date is required.",
+  "createProjectValidationEnddateBase": "End date must be a date."
 }
