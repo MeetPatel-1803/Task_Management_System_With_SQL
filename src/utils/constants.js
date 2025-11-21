@@ -3,6 +3,7 @@ module.exports = {
     IN_DEVELOPMENT: "IN_DEVELOPMENT",
     ON_HOLD: "ON_HOLD",
     COMPLETED: "COMPLETED",
+    NOT_ACTIVE: "NOT_ACTIVE",
   },
   TASK: {
     STATUS: {
@@ -36,5 +37,9 @@ module.exports = {
     INTERNAL_SERVER: 500,
     MAINTENANCE: 503,
     TOKEN_INAVLID: 498,
+  },
+  USER_ROLES: {
+    PM: "PROJECT_MANAGER",
+    EMPLOYEE: "EMPLOYEE",
   },
 };

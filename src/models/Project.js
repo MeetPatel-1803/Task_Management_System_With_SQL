@@ -33,6 +33,14 @@ const projectSchema = sequelize.define(
       allowNull: false,
       defaultValue: PROJECT_STATUS.IN_DEVELOPMENT,
     },
+    created_by: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,

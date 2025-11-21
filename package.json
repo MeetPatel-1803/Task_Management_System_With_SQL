@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "dev": "nodemon server.js"
+    "start": "DOTENV_CONFIG_QUIET=true nodemon -r dotenv/config server.js",
+    "dev": "DOTENV_CONFIG_QUIET=true nodemon -r dotenv/config server.js"
   },
   "author": "",
   "license": "ISC",

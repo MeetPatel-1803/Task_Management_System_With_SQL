@@ -6,17 +6,32 @@ const {
   resetPassword,
 } = require("../../controllers/authController.js");
 const { userAuthToken } = require("../../middlewares/authUser.js");
-const { createProject } = require("../../controllers/projectController.js");
+const {
+  createProject,
+  updateProject,
+  deleteProject,
+  addProjectMembers,
+  removeProjectMembers,
+  getProject,
+} = require("../../controllers/projectController.js");
+// const { userAccess } = require("../../middlewares/userAccess.js");
 const router = Router();
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
 
 router.use("/", userAuthToken);
+// router.use("/", userAccess);
 
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
+router.get("/project", getProject);
 router.post("/project", createProject);
+router.put("/project/:id", updateProject);
+router.delete("/project/:id", deleteProject);
+
+router.post("/project/add-members", addProjectMembers);
+router.post("/project/remove-members", removeProjectMembers);
 
 module.exports = router;

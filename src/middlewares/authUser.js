@@ -27,7 +27,7 @@ const userAuthToken = async (req, res, next) => {
     const decoded = await verifyUser(tokenData);
     if (decoded.id) {
       const result = await User.findByPk(decoded.id, {
-        attributes: ["id", "name", "email", "phone_number"],
+        attributes: ["id", "name", "email", "phone_number", "role"],
         raw: true,
       });
 
