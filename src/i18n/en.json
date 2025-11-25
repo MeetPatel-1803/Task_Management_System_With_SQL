@@ -59,5 +59,9 @@
   "getProjectValidationProjectidLength": "The project ID must be a valid UUID.",
   "updateProjectValidationProjectidLength": "The project ID must be a valid UUID.",
   "addProjectMembersValidationProjectidLength": "The project ID must be a valid UUID.",
-  "removeProjectMembersValidationProjectidLength": "The project ID must be a valid UUID."
+  "removeProjectMembersValidationProjectidLength": "The project ID must be a valid UUID.",
+  "projectsList": " User project list fetched successfully.",
+  "noProjectsFound": "No projects are assigned to this user.",
+  "userProfile": " User profile fetched successfully.",
+  "noUserFound": "User not found."
 }
