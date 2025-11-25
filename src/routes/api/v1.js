@@ -14,6 +14,10 @@ const {
   removeProjectMembers,
   getProject,
 } = require("../../controllers/projectController.js");
+const {
+  listUserProjects,
+  userProfile,
+} = require("../../controllers/userController.js");
 // const { userAccess } = require("../../middlewares/userAccess.js");
 const router = Router();
 
@@ -33,5 +37,8 @@ router.delete("/project/:id", deleteProject);
 
 router.post("/project/add-members", addProjectMembers);
 router.post("/project/remove-members", removeProjectMembers);
+
+router.get("/:id/projects", listUserProjects);
+router.get("/:id/profile", userProfile);
 
 module.exports = router;
