@@ -33,7 +33,7 @@ const createProjectValidation = (req, res, callback) => {
 
 const updateProjectValidation = (req, res, callback) => {
   const schema = joi.object({
-    projectId: joi.string().trim().required(),
+    projectId: joi.string().trim().required().length(36),
     title: joi.string().trim(),
     description: joi.string(),
     startDate: joi.date().iso(),
@@ -59,7 +59,7 @@ const updateProjectValidation = (req, res, callback) => {
 
 const addProjectMembersValidation = (req, res, callback) => {
   const schema = joi.object({
-    projectId: joi.string().trim().required(),
+    projectId: joi.string().trim().required().length(36),
     userIds: joi.array().items(joi.string()).unique().required().max(5),
   });
 
@@ -81,7 +81,7 @@ const addProjectMembersValidation = (req, res, callback) => {
 
 const removeProjectMembersValidation = (req, res, callback) => {
   const schema = joi.object({
-    projectId: joi.string().trim().required(),
+    projectId: joi.string().trim().required().length(36),
     userIds: joi.array().items(joi.string()).unique().required(),
   });
 
@@ -101,9 +101,31 @@ const removeProjectMembersValidation = (req, res, callback) => {
   return callback(true);
 };
 
+const getProjectValidation = (req, res, callback) => {
+  const schema = joi.object({
+    projectId: joi.string().trim().required().length(36),
+  });
+
+  const { error, value } = schema.validate(req, {
+    abortEarly: false,
+    convert: true, // ensures trim(), date parsing, etc. are applied
+    stripUnknown: false, // remove any unexpected fields if true
+  });
+
+  if (error) {
+    return validationErrorResponseData(
+      res,
+      res.__(validationMessageKey("getProjectValidation", error))
+    );
+  }
+  Object.assign(req, value);
+  return callback(true);
+};
+
 module.exports = {
-  createProjectValidation,
+  getProjectValidation,
   updateProjectValidation,
+  createProjectValidation,
   addProjectMembersValidation,
   removeProjectMembersValidation,
 };

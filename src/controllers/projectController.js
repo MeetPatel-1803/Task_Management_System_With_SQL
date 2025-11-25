@@ -1,5 +1,5 @@
 const { Sequelize, Op } = require("sequelize");
-const { Project, User, UserProject, sequelize } = require("../models/index.js");
+const { Project, User } = require("../models/index.js");
 const { META_CODE, USER_ROLES } = require("../utils/constants.js");
 const {
   internalServerErrorResponse,
@@ -12,7 +12,10 @@ const {
   updateProjectValidation,
   addProjectMembersValidation,
   removeProjectMembersValidation,
+  getProjectValidation,
 } = require("../validations/projectValidations");
+const { getData } = require("../utils/dbHelper.js");
+const { valid } = require("joi");
 
 const createProject = async (req, res) => {
   try {
@@ -199,63 +202,39 @@ const deleteProject = async (req, res) => {
 
 const getProject = async (req, res) => {
   try {
-    if (req.authUser.role !== USER_ROLES.PM) {
-      return errorResponseWithoutData(
-        res,
-        META_CODE.FAIL,
-        res.__("accessDenied")
-      );
-    }
+    const projectId = req.params.id;
+    getProjectValidation({ projectId }, res, async (validate) => {
+      if (validate) {
+        try {
+          // Sequelize query for the same.
+          const query = `SELECT projects.*, users.name AS created_by FROM projects INNER JOIN users ON projects.created_by = users.id WHERE projects.id = :projectId`;
+          const replacements = { projectId };
+          const projectDetails = await getData(query, replacements);
 
-    const reqParams = req.body;
-    if (!reqParams.projectId) {
-      return errorResponseWithoutData(
-        res,
-        META_CODE.FAIL,
-        res.__("projectIdRequired")
-      );
-    }
-    // const projectDetails = await Project.findByPk(reqParams.projectId);
-    // const projectDetails = await sequelize.query(
-    //   "SELECT projects.title, projects.start_date, projects.end_date, projects.status, projects.created_by " +
-    //     "FROM projects " +
-    //     "INNER JOIN user_projects ON user_projects.user_id = :userId",
-    //   {
-    //     replacements: { userId: req.authUser.id },
-    //     type: sequelize.QueryTypes.SELECT,
-    //   }
-    // );
-    const projectDetails = await Project.findByPk(reqParams.projectId, {
-      include: [
-        {
-          model: User,
-          attributes: [],
-        },
-      ],
-      attributes: {
-        include: [
-          [Sequelize.col("user.name"), "created_by"],
-          [Sequelize.col("user.profile_picture"), "profile_picture"],
-        ],
-      },
+          if (projectDetails && projectDetails.length) {
+            return successResponseData(
+              res,
+              projectDetails[0],
+              META_CODE.SUCCESS,
+              res.__("projectDetails")
+            );
+          } else {
+            return errorResponseWithoutData(
+              res,
+              META_CODE.FAIL,
+              res.__("projectNotFound")
+            );
+          }
+        } catch (error) {
+          return errorResponseWithoutData(
+            res,
+            META_CODE.FAIL,
+            res.__(error.message)
+          );
+        }
+      }
     });
-    console.log(projectDetails);
-    // if (projectDetails) {
-    //   return successResponseData(
-    //     res,
-    //     projectDetails,
-    //     META_CODE.SUCCESS,
-    //     res.__("projectDetails")
-    //   );
-    // } else {
-    //   return errorResponseWithoutData(
-    //     res,
-    //     META_CODE.FAIL,
-    //     res.__("projectNotFound")
-    //   );
-    // }
   } catch (error) {
-    console.log(error);
     return internalServerErrorResponse(res);
   }
 };

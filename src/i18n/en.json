@@ -54,5 +54,10 @@
   "noValidUsersToRemove": "No valid users to remove.",
   "projectMemberRemovedSuccessfully": "Project member removed successfully.",
   "removeProjectMembersValidationUnique": "removeProjectMembersValidationUnique",
-  "invalidUserId": "The user(s) you selected are not part of the project."
+  "invalidUserId": "The user(s) you selected are not part of the project.",
+  "projectDetails": "Project details fetched successfully.",
+  "getProjectValidationProjectidLength": "The project ID must be a valid UUID.",
+  "updateProjectValidationProjectidLength": "The project ID must be a valid UUID.",
+  "addProjectMembersValidationProjectidLength": "The project ID must be a valid UUID.",
+  "removeProjectMembersValidationProjectidLength": "The project ID must be a valid UUID."
 }

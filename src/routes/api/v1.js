@@ -26,7 +26,7 @@ router.use("/", userAuthToken);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
-router.get("/project", getProject);
+router.get("/project/:id", getProject);
 router.post("/project", createProject);
 router.put("/project/:id", updateProject);
 router.delete("/project/:id", deleteProject);
