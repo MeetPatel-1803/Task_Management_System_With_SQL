@@ -56,6 +56,7 @@ const Project = require("./Project.js");
 const Task = require("./Task.js");
 const UserTask = require("./UserTasks.js");
 const UserPasswordResets = require("./UserPasswordResetToken.js");
+const UserProject = require("./UserProjects.js");
 
 // Define associations
 User.belongsToMany(Task, {
@@ -85,6 +86,29 @@ User.hasMany(Task, {
   foreignKey: "created_by",
 });
 
+Project.belongsTo(User, {
+  foreignKey: "created_by",
+});
+
+Project.belongsToMany(User, {
+  through: "user_projects",
+  foreignKey: "project_id",
+  otherKey: "user_id",
+  as: "users",
+});
+
+User.belongsToMany(Project, {
+  through: UserProject,
+  foreignKey: "user_id",
+  otherKey: "project_id",
+  as: "projects",
+});
+
+// User.hasMany(Project, {
+//   foreignKey: "created_by",
+//   as: "projectsCreated",
+// });
+
 // Export everything together
 module.exports = {
   sequelize,
@@ -93,4 +117,5 @@ module.exports = {
   Task,
   UserTask,
   UserPasswordResets,
+  UserProject,
 };

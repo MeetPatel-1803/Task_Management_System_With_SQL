@@ -1,6 +1,7 @@
 const joi = require("joi");
 const { validationErrorResponseData } = require("../utils/response.js");
 const { validationMessageKey } = require("../utils/helper.js");
+const { USER_ROLES } = require("../utils/constants.js");
 
 const signUpValidation = (req, res, callback) => {
   const schema = joi.object({
@@ -18,6 +19,10 @@ const signUpValidation = (req, res, callback) => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
       ),
     phone_number: joi.string().optional(),
+    role: joi
+      .string()
+      .required()
+      .valid(...Object.values(USER_ROLES)),
   });
   const { error } = schema.validate(req);
   if (error) {

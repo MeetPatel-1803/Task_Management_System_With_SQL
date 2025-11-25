@@ -47,6 +47,7 @@ const signUp = async (req, res) => {
               email: reqParams.email,
               password: hash,
               phone_number: reqParams.phone_number,
+              role: reqParams.role,
             });
             if (newUser) {
               return successResponseData(
