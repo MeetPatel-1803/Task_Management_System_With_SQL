@@ -256,6 +256,67 @@ SELECT
   }
 };
 
+const projectTasks = async (req, res) => {
+  try {
+    const reqParams = req.query;
+    const projectId = req.params.id;
+    const baseQuery = `
+SELECT 
+          tasks.id, 
+          tasks.title, 
+          tasks.status, 
+          tasks.priority, 
+          json_agg(
+              json_build_object(
+              'name',
+              users.name,
+              'profile_picture',
+              users.profile_picture,
+              'userId',
+              users.id
+              )
+              ) AS users 
+        FROM tasks 
+        LEFT JOIN user_tasks ON user_tasks.task_id = tasks.id 
+        LEFT JOIN users ON user_tasks.user_id = users.id 
+        WHERE tasks.project_id = :projectId
+      `;
+    const filteredQuery = `${baseQuery}
+            AND (:assignee IS NULL OR user_tasks.user_id = :assignee)
+            AND (:status IS NULL OR tasks.status = :status)
+            AND (:priority IS NULL OR tasks.priority = :priority) 
+        GROUP BY tasks.id
+      `;
+    const normalQuery = `${baseQuery} GROUP BY tasks.id`;
+
+    const replacements = {
+      projectId,
+      assignee: reqParams.assignee || null,
+      status: reqParams.status || null,
+      priority: reqParams.priority || null,
+    };
+
+    const hasAnyFilter =
+      reqParams.assignee || reqParams.status || reqParams.priority;
+    const filteredQueryData = hasAnyFilter
+      ? await getData(filteredQuery, replacements)
+      : [];
+
+    const normalQueryData = filteredQueryData.length
+      ? []
+      : await getData(normalQuery, replacements);
+
+    return successResponseData(
+      res,
+      { filteredQueryData, normalQueryData },
+      META_CODE.SUCCESS,
+      res.__("projectTasksList")
+    );
+  } catch (error) {
+    return internalServerErrorResponse(res);
+  }
+};
+
 const addRemoveTaskMembers = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {

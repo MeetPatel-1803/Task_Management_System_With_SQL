@@ -421,7 +421,7 @@ const removeProjectMembers = async (req, res) => {
 module.exports = {
   createProject,
   updateProject,
-  // deleteProject,
+  deleteProject,
   getProject,
   addProjectMembers,
   removeProjectMembers,

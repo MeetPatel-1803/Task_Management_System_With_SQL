@@ -146,7 +146,7 @@ const forgotPassword = async (req, res) => {
             d.getMilliseconds()
           );
 
-          const passwordResetToken = UserPasswordResets.findOne({
+          const passwordResetToken = await UserPasswordResets.findOne({
             where: { user_id: user.id },
           });
 
@@ -243,7 +243,7 @@ const resetPassword = async (req, res) => {
                 );
               } else {
                 const setData = await UserPasswordResets.update(
-                  { Token: null, expires_at: null },
+                  { token: null, expires_at: null },
                   { where: { user_id: req.authUser.id } }
                 );
                 const updatePassword = await User.update(
@@ -253,7 +253,7 @@ const resetPassword = async (req, res) => {
                 if (!setData || !updatePassword) {
                   return errorResponseWithoutData(
                     res,
-                    RESPONSE_CODE.TOKEN_INAVLID,
+                    RESPONSE_CODE.TOKEN_INVALID,
                     res.__("invalidToken")
                   );
                 } else {
@@ -268,7 +268,7 @@ const resetPassword = async (req, res) => {
           } else {
             return errorResponseWithoutData(
               res,
-              RESPONSE_CODE.TOKEN_INAVLID,
+              RESPONSE_CODE.TOKEN_INVALID,
               res.__("invalidToken")
             );
           }
@@ -281,7 +281,7 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
-  // signUp,
+  signUp,
   signIn,
   forgotPassword,
   resetPassword,
