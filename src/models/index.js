@@ -59,13 +59,17 @@ const UserPasswordResets = require("./UserPasswordResetToken.js");
 const UserProject = require("./UserProjects.js");
 
 // Define associations
-User.belongsToMany(Task, {
-  through: "user_tasks",
+
+UserTask.belongsTo(User, {
   foreignKey: "user_id",
 });
 
-Task.belongsToMany(User, {
-  through: "user_tasks",
+Task.hasMany(UserTask, {
+  foreignKey: "task_id",
+  onDelete: "CASCADE", // ensures dependent UserTasks are deleted
+});
+
+UserTask.belongsTo(Task, {
   foreignKey: "task_id",
 });
 
@@ -79,10 +83,6 @@ Project.hasMany(Task, {
 });
 
 Task.belongsTo(User, {
-  foreignKey: "created_by",
-});
-
-User.hasMany(Task, {
   foreignKey: "created_by",
 });
 
@@ -103,11 +103,6 @@ User.belongsToMany(Project, {
   otherKey: "project_id",
   as: "projects",
 });
-
-// User.hasMany(Project, {
-//   foreignKey: "created_by",
-//   as: "projectsCreated",
-// });
 
 // Export everything together
 module.exports = {

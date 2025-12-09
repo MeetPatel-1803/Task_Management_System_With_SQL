@@ -64,7 +64,6 @@ const signUp = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return internalServerErrorResponse(res);
   }
 };
