@@ -207,7 +207,14 @@ const getProject = async (req, res) => {
       if (validate) {
         try {
           // Sequelize query for the same.
-          const query = `SELECT projects.*, users.name AS created_by FROM projects INNER JOIN users ON projects.created_by = users.id WHERE projects.id = :projectId`;
+          const query = `
+SELECT 
+          projects.*, 
+          users.name AS created_by 
+        FROM projects 
+        INNER JOIN users ON projects.created_by = users.id 
+        WHERE projects.id = :projectId
+    `;
           const replacements = { projectId };
           const projectDetails = await getData(query, replacements);
 

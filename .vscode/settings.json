@@ -8,7 +8,7 @@
     "commands": [
       {
         "match": ".*\\.js$",
-        "cmd": "npm run format-sql"
+        "cmd": "node scripts/format-sql.js ${file}"
       }
     ]
   },

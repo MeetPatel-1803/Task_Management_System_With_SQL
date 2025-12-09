@@ -26,14 +26,6 @@ const userTaskSchema = sequelize.define(
         key: "id",
       },
     },
-    project_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: "projects",
-        key: "id",
-      },
-    },
   },
   {
     timestamps: true,

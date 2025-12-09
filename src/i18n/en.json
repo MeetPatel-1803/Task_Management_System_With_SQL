@@ -63,5 +63,21 @@
   "projectsList": " User project list fetched successfully.",
   "noProjectsFound": "No projects are assigned to this user.",
   "userProfile": " User profile fetched successfully.",
-  "noUserFound": "User not found."
+  "noUserFound": "User not found.",
+  "taskCreatedSuccessfully": "Task created successfully.",
+  "taskCreationFailed": "Failed to create a task.",
+  "taskAlreadyExist": "Task already exist.",
+  "taskNotFound": "Task not found.",
+  "taskUpdatedSuccessfully": "Task updated successfully.",
+  "taskIdRequired": "Task ID is required.",
+  "taskDeletedSuccessfully": "Task deleted successfully.",
+  "taskMembersUpdatedSuccessfully": "Task member(s) updated successfully.",
+  "userAlreadyAssigned": "User already assigned to this task.",
+  "taskMembersAddedSuccessfully": "Task member added successfully.",
+  "taskMembersRemovedSuccessfully": "Task member removed successfully.",
+  "addRemoveTaskMembersValidationShouldaddusersBase": "`shouldAddUser` must be a boolean value.",
+  "addRemoveTaskMembersValidationShouldaddusersRequired": "shouldAddUser is required.",
+  "noDataFound": "No data found.",
+  "projectTasksList": "Project tasks list fetched successfully.",
+  "taskFetched": "Task fetched successfully."
 }
