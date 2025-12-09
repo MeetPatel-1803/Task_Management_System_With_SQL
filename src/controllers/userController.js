@@ -88,5 +88,5 @@ SELECT
 
 module.exports = {
   userProfile,
-  listUserProjects,
+  // listUserProjects,
 };

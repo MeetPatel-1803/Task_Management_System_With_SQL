@@ -281,7 +281,7 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
-  signUp,
+  // signUp,
   signIn,
   forgotPassword,
   resetPassword,
