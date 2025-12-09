@@ -9,6 +9,10 @@
       {
         "match": ".*\\.js$",
         "cmd": "node scripts/format-sql.js ${file}"
+      },
+      {
+        "match": ".*\\.js$",
+        "cmd": "node scripts/qodo-analyze.js ${file}"
       }
     ]
   },
